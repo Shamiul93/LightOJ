@@ -26,10 +26,12 @@ typedef unsigned long long ull ;
 /* int dx[] = {1,-1,0,0,1,1,-1,-1} , dy[] = {0,0,1,-1,1,-1,1,-1}; */ // 8 Direction
 /* int dx[] = {1,-1,1,-1,2,2,-2,-2} , dy[] = {2,2,-2,-2,1,-1,1,-1}; */ // Knight Direction
 /* int dx[] = {2,-2,1,1,-1,-1} , dy[] = {0,0,1,-1,1,-1}; */ // Hexagonal Direction
+
 struct Node
 {
     int u , c , co ;
 };
+
 class cmp
 {
 public:
@@ -39,6 +41,7 @@ public:
         else return A.co > B.co ;
     }
 };
+
 vector < pair<int,int> > G[100+10] ;
 int arr[100+10] , d[100+10][100+10] , n , m , q ;
 bool check[100+10][100+10] ;
@@ -81,6 +84,7 @@ int dijkstra(int s,int t,int p)
     }
     return -1 ;
 }
+
 int main()
 {
     //freopen("input.txt","r",stdin);
