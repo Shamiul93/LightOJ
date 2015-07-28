@@ -1,0 +1,93 @@
+/*
+    Author : RAJON BARDHAN
+    AUST CSE 27th Batch
+    All my programming success are dedicated to my mom , dad , little sister madhobi , teachers , friends and love TANIA SULTANA RIMY
+
+    Problem Name : 1018 - Brush (IV)
+    ALGORITHM : Dynamic Programming
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+
+#define pb push_back
+#define ff first
+#define ss second
+#define mp make_pair
+#define memo(a,b) memset(a,b,sizeof(a))
+#define INF 1e9
+#define EPS 1e-8
+#define PI 3.14159265358979323846
+
+typedef long long ll ;
+typedef unsigned long long ull ;
+
+/* int dx[] = {1,-1,0,0} , dy[] = {0,0,1,-1}; */ // 4 Direction
+/* int dx[] = {1,-1,0,0,1,1,-1,-1} , dy[] = {0,0,1,-1,1,-1,1,-1}; */ // 8 Direction
+/* int dx[] = {1,-1,1,-1,2,2,-2,-2} , dy[] = {2,2,-2,-2,1,-1,1,-1}; */ // Knight Direction
+/* int dx[] = {2,-2,1,1,-1,-1} , dy[] = {0,0,1,-1,1,-1}; */ // Hexagonal Direction
+
+struct Point
+{
+    int x , y ;
+}arr[20];
+
+int N , cas , dp[(1<<16)+10] ;
+
+bool Check(int N,int pos) { return (bool)(N&(1<<pos)); }
+int Set(int N,int pos) { return (N|(1<<pos)); }
+
+int same_traingle(Point A,Point B,Point C)
+{
+    return A.x*(B.y-C.y) + B.x*(C.y-A.y) + C.x*(A.y-B.y) ;
+}
+
+int solve(int mask)
+{
+    int &ret = dp[mask] ;
+    if(ret!=-1) return ret ;
+
+    int cnt = 0 ;
+    for(int i=0;i<N;i++) if(Check(mask,i)==false) cnt++;
+    if(cnt==1) return ret = 1 ;
+    if(cnt==0) return ret = 0 ;
+    ret = INF ;
+
+    for(int i=0;i<N;i++)
+    {
+        if(Check(mask,i)==false)
+        {
+            for(int j=0;j<N;j++)
+            {
+                if(i!=j&&Check(mask,j)==false)
+                {
+                    int temp = mask ;
+                    for(int k=0;k<N;k++)
+                    {
+                        if(same_traingle(arr[i],arr[j],arr[k])==0) temp=Set(temp,k);
+                    }
+                    ret = min(ret,1+solve(temp));
+                }
+            }
+            break ;
+        }
+    }
+
+    return ret ;
+}
+int main()
+{
+    //freopen("input.txt","r",stdin);
+    //freopen("output.txt","w",stdout);
+    int T ;
+    scanf("%d",&T);
+    for(cas=1;cas<=T;cas++)
+    {
+        scanf("%d",&N);
+        for(int i=0;i<N;i++) scanf("%d%d",&arr[i].x,&arr[i].y);
+
+        memo(dp,-1);
+        printf("Case %d: %d\n",cas,solve(0));
+    }
+    return 0;
+}
