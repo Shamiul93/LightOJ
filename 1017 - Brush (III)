@@ -1,0 +1,76 @@
+/*
+    Author : RAJON BARDHAN
+    AUST CSE 27th Batch
+    All my programming success are dedicated to my mom , dad , little sister madhobi , teachers , friends and love TANIA SULTANA RIMY
+
+    Problem Name : 1017 - Brush (III)
+    ALGORITHM : Dynamic Programming
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+
+#define pb push_back
+#define ff first
+#define ss second
+#define mp make_pair
+#define memo(a,b) memset(a,b,sizeof(a))
+#define INF 1e9
+#define EPS 1e-8
+#define PI 3.14159265358979323846
+
+typedef long long ll ;
+typedef unsigned long long ull ;
+
+/* int dx[] = {1,-1,0,0} , dy[] = {0,0,1,-1}; */ // 4 Direction
+/* int dx[] = {1,-1,0,0,1,1,-1,-1} , dy[] = {0,0,1,-1,1,-1,1,-1}; */ // 8 Direction
+/* int dx[] = {1,-1,1,-1,2,2,-2,-2} , dy[] = {2,2,-2,-2,1,-1,1,-1}; */ // Knight Direction
+/* int dx[] = {2,-2,1,1,-1,-1} , dy[] = {0,0,1,-1,1,-1}; */ // Hexagonal Direction
+
+struct Point
+{
+    int x , y ;
+    bool operator < (const Point &A) const
+    {
+        return y < A.y ;
+    }
+}arr[100+10];
+
+int N , w , k , dp[100+10][10000+10] ;
+
+int solve(int pos,int mov)
+{
+    int &ret = dp[pos][mov] ;
+    if(ret!=-1) return ret ;
+    if(pos==N||mov==0) return ret = 0 ;
+
+    ret = 0 ;
+    // move
+    int i = pos ;
+    for(;i<N;i++) if(arr[pos].y+w<arr[i].y) break ;
+    ret = max(ret,i-pos+solve(i,mov-1));
+
+    // not move
+    ret = max(ret,solve(pos+1,mov));
+
+    return ret ;
+}
+
+int main()
+{
+    //freopen("input.txt","r",stdin);
+    //freopen("output.txt","w",stdout);
+    int T ;
+    cin >> T ;
+    for(int cas=1;cas<=T;cas++)
+    {
+        cin >> N >> w >> k ;
+        for(int i=0;i<N;i++) scanf("%d%d",&arr[i].x,&arr[i].y);
+
+        sort(arr,arr+N);
+
+        memo(dp,-1);
+        cout << "Case " << cas << ": " << solve(0,k) << endl ;
+    }
+    return 0;
+}
