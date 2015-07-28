@@ -1,0 +1,64 @@
+/*
+    Author : RAJON BARDHAN
+    AUST CSE 27th Batch
+    All my programming success are dedicated to my mom , dad , little sister madhobi , teachers , friends and love TANIA SULTANA RIMY
+
+    Problem Name : 1016 - Brush (II)
+    ALGORITHM : Greedy
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+
+#define pb push_back
+#define ff first
+#define ss second
+#define mp make_pair
+#define memo(a,b) memset(a,b,sizeof(a))
+#define INF 1e9
+#define EPS 1e-8
+#define PI 3.14159265358979323846
+
+typedef long long ll ;
+typedef unsigned long long ull ;
+
+/* int dx[] = {1,-1,0,0} , dy[] = {0,0,1,-1}; */ // 4 Direction
+/* int dx[] = {1,-1,0,0,1,1,-1,-1} , dy[] = {0,0,1,-1,1,-1,1,-1}; */ // 8 Direction
+/* int dx[] = {1,-1,1,-1,2,2,-2,-2} , dy[] = {2,2,-2,-2,1,-1,1,-1}; */ // Knight Direction
+/* int dx[] = {2,-2,1,1,-1,-1} , dy[] = {0,0,1,-1,1,-1}; */ // Hexagonal Direction
+
+struct Node
+{
+    int x , y ;
+    bool operator < (const Node &A) const
+    {
+        return y < A.y ;
+    }
+}arr[50000+10];
+
+int N , w , ans , pre ;
+
+int main()
+{
+    //freopen("input.txt","r",stdin);
+    //freopen("output.txt","w",stdout);]
+    int T ;
+    scanf("%d",&T);
+    for(int cas=1;cas<=T;cas++)
+    {
+        scanf("%d%d",&N,&w);
+        for(int i=0;i<N;i++) scanf("%d%d",&arr[i].x,&arr[i].y);
+
+        sort(arr,arr+N);
+        ans = 0 ; pre=-1 ;
+
+        for(int i=0;i<N;i++)
+        {
+            if(pre==-1) pre = arr[i].y , ans++ ;
+            else if(pre+w<arr[i].y) pre=arr[i].y , ans++ ;
+        }
+
+        printf("Case %d: %d\n",cas,ans);
+    }
+    return 0;
+}
