@@ -1,0 +1,86 @@
+/*
+    Author : RAJON BARDHAN
+    AUST CSE 27th Batch
+    All my programming success are dedicated to my mom , dad , little sister madhobi , teachers , friends and love TANIA SULTANA RIMY
+
+    Problem Name : 1057 - Collecting Gold ( LightOJ )
+    ALGORITHM : Bitmask DP
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+
+#define pb push_back
+#define ff first
+#define ss second
+#define mp make_pair
+#define memo(a,b) memset(a,b,sizeof(a))
+#define INF 1e9
+#define EPS 1e-8
+#define PI 3.14159265358979323846
+
+typedef long long ll ;
+typedef unsigned long long ull ;
+
+/* int dx[] = {1,-1,0,0} , dy[] = {0,0,1,-1}; */ // 4 Direction
+/* int dx[] = {1,-1,0,0,1,1,-1,-1} , dy[] = {0,0,1,-1,1,-1,1,-1}; */ // 8 Direction
+/* int dx[] = {1,-1,1,-1,2,2,-2,-2} , dy[] = {2,2,-2,-2,1,-1,1,-1}; */ // Knight Direction
+/* int dx[] = {2,-2,1,1,-1,-1} , dy[] = {0,0,1,-1,1,-1}; */ // Hexagonal Direction
+
+struct Point
+{
+    int x , y ;
+}P[20];
+
+int m , n , cas , idx , dist[20][20] , dp[20][(1<<17)] , check[20][(1<<17)] ;
+char input[25][25] ;
+
+bool Check(int N,int pos) { return (bool)(N&(1<<pos)); }
+int Set(int N,int pos) { return (N|(1<<pos)); }
+int f(Point A,Point B){ return max(abs(A.x-B.x),abs(A.y-B.y)); }
+
+int solve(int pos,int mask)
+{
+    if((1<<idx)-1==mask) return dist[pos][0] ;
+
+    int &ret = dp[pos][mask] ;
+    if(check[pos][mask]==cas) return ret ;
+    check[pos][mask] = cas ;
+    ret = INF ;
+
+    for(int i=1;i<idx;i++)
+    {
+        if(Check(mask,i)==false) ret = min(ret,dist[pos][i]+solve(i,Set(mask,i)));
+    }
+    return ret ;
+}
+
+int main()
+{
+    //freopen("input.txt","r",stdin);
+    //freopen("output.txt","w",stdout);
+    int T ;
+    cin >> T ;
+    for(cas=1;cas<=T;cas++)
+    {
+        cin >> m >> n ;
+        idx = 1 ;
+
+        for(int i=1;i<=m;i++)
+        {
+            for(int j=1;j<=n;j++)
+            {
+                char a ;
+                cin >> a ;
+                if(a=='x') P[0].x = i , P[0].y = j ;
+                else if(a=='g') P[idx].x = i , P[idx++].y = j ;
+            }
+        }
+
+        for(int i=1;i<idx;i++) dist[i][0] = dist[0][i] = f(P[0],P[i]);
+        for(int i=1;i<idx;i++) for(int j=i+1;j<idx;j++) dist[i][j] = dist[j][i] = f(P[i],P[j]);
+
+        cout << "Case " << cas << ": " << solve(0,1) << endl ;
+    }
+    return 0;
+}
