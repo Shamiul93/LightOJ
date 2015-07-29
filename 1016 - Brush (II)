@@ -27,7 +27,7 @@ typedef unsigned long long ull ;
 /* int dx[] = {1,-1,1,-1,2,2,-2,-2} , dy[] = {2,2,-2,-2,1,-1,1,-1}; */ // Knight Direction
 /* int dx[] = {2,-2,1,1,-1,-1} , dy[] = {0,0,1,-1,1,-1}; */ // Hexagonal Direction
 
-struct Node
+struct Point
 {
     int x , y ;
     bool operator < (const Node &A) const
