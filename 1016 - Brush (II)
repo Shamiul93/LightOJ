@@ -30,7 +30,7 @@ typedef unsigned long long ull ;
 struct Point
 {
     int x , y ;
-    bool operator < (const Node &A) const
+    bool operator < (const Point &A) const
     {
         return y < A.y ;
     }
