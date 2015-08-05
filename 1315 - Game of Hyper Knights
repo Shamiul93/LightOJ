@@ -1,0 +1,82 @@
+/*
+    Author : RAJON BARDHAN
+    AUST CSE 27th Batch
+    All my programming success are dedicated to my mom , dad , little sister madhobi , teachers , friends and love TANIA SULTANA RIMY
+
+    Problem Name : 1315 - Game of Hyper Knights ( LightOJ )
+    ALGORITHM : Game Theory
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+
+#define pb push_back
+#define ff first
+#define ss second
+#define mp make_pair
+#define memo(a,b) memset(a,b,sizeof(a))
+#define INF 1e9
+#define EPS 1e-8
+#define PI 3.14159265358979323846
+
+typedef long long ll ;
+typedef unsigned long long ull ;
+
+/* int dx[] = {1,-1,0,0} , dy[] = {0,0,1,-1}; */ // 4 Direction
+/* int dx[] = {1,-1,0,0,1,1,-1,-1} , dy[] = {0,0,1,-1,1,-1,1,-1}; */ // 8 Direction
+/* int dx[] = {1,-1,1,-1,2,2,-2,-2} , dy[] = {2,2,-2,-2,1,-1,1,-1}; */ // Knight Direction
+/* int dx[] = {2,-2,1,1,-1,-1} , dy[] = {0,0,1,-1,1,-1}; */ // Hexagonal Direction
+
+int movX[] = {-3,-2,-2,-1,-1,1} , movY[] = {-1,-1,1,-2,-3,-2} ;
+int cas , N , Nim , dp[500+10][500+10] ;
+
+bool valid(int row,int col)
+{
+    if(row>=0&&row<=500&&col>=0&&col<=500) return true ;
+    return false ;
+}
+
+int grundy_value(int row,int col)
+{
+    int &ret = dp[row][col] ;
+    set <int> S ;
+
+    if(ret!=-1) return ret ;
+    ret = 0 ;
+
+    for(int i=0;i<6;i++)
+    {
+        int nr = row+movX[i] , nc = col+movY[i] ;
+        if(valid(nr,nc)) S.insert(grundy_value(nr,nc));
+    }
+
+    while(S.count(ret)) ret++ ;
+
+    return ret ;
+}
+
+int main()
+{
+    //freopen("input.txt","r",stdin);
+    //freopen("output.txt","w",stdout);
+    memo(dp,-1);
+    int T ;
+    scanf("%d",&T);
+
+    for(cas=1;cas<=T;cas++)
+    {
+        Nim = 0 ;
+        scanf("%d",&N);
+        for(int i=1;i<=N;i++)
+        {
+            int x , y ;
+            scanf("%d%d",&x,&y);
+            int grundy = grundy_value(x,y);
+            Nim=Nim^grundy;
+        }
+
+        if(Nim) printf("Case %d: Alice\n",cas);
+        else printf("Case %d: Bob\n",cas);
+    }
+    return 0;
+}
