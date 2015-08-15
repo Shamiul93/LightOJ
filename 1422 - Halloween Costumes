@@ -1,0 +1,66 @@
+/*
+    Author : RAJON BARDHAN
+    AUST CSE 27th Batch
+    All my programming success are dedicated to my mom , dad , little sister madhobi , teachers , friends and love TANIA SULTANA RIMY
+
+    Problem Name : 1422 - Halloween Costumes
+    ALGORITHM : Dynamic Programming
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+
+#define pb push_back
+#define ff first
+#define ss second
+#define mp make_pair
+#define memo(a,b) memset(a,b,sizeof(a))
+#define INF 1e9
+#define EPS 1e-8
+#define PI 3.14159265358979323846
+
+typedef long long ll ;
+typedef unsigned long long ull ;
+
+/* int dx[] = {1,-1,0,0} , dy[] = {0,0,1,-1}; */ // 4 Direction
+/* int dx[] = {1,-1,0,0,1,1,-1,-1} , dy[] = {0,0,1,-1,1,-1,1,-1}; */ // 8 Direction
+/* int dx[] = {1,-1,1,-1,2,2,-2,-2} , dy[] = {2,2,-2,-2,1,-1,1,-1}; */ // Knight Direction
+/* int dx[] = {2,-2,1,1,-1,-1} , dy[] = {0,0,1,-1,1,-1}; */ // Hexagonal Direction
+
+int arr[100+10],dp[100+10][100+10];
+
+int solve(int lo,int hi)
+{
+    int &ret = dp[lo][hi] ;
+
+    if(ret!=-1) return ret ;
+    if(lo==hi) return ret = 1 ;
+    if(lo>hi) return ret = 0 ;
+
+    ret = 1+solve(lo+1,hi);
+
+    for(int i=lo+1;i<=hi;i++)
+    {
+        if(arr[lo]==arr[i]) ret = min(ret,solve(lo+1,i)+solve(i+1,hi));
+    }
+
+    return ret ;
+}
+
+int main()
+{
+    //freopen("input.txt","r",stdin);
+    //freopen("output.txt","w",stdout);
+    int T ;
+    cin >> T ;
+    for(int cas=1;cas<=T;cas++)
+    {
+        int n ;
+        cin >> n ;
+        for(int i=1;i<=n;i++) cin >> arr[i] ;
+
+        memo(dp,-1);
+        cout << "Case " << cas << ": " << solve(1,n) << endl ;
+    }
+    return 0;
+}
