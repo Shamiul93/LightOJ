@@ -1,0 +1,84 @@
+/*
+    Author : RAJON BARDHAN
+    AUST CSE 27th Batch
+    All my programming success are dedicated to my mom , dad , little sister madhobi , teachers , friends and love TANIA SULTANA RIMY
+ 
+    Problem Name : 1289 - LCM from 1 to n
+    ALGORITHM : Number Theory
+*/
+ 
+#include <bits/stdc++.h>
+using namespace std;
+ 
+#define pb push_back
+#define ff first
+#define ss second
+#define mp make_pair
+#define memo(a,b) memset(a,b,sizeof(a))
+#define INF 1e9
+#define EPS 1e-8
+#define PI 3.14159265358979323846
+ 
+typedef long long ll ;
+typedef unsigned long long ull ;
+ 
+/* int dx[] = {1,-1,0,0} , dy[] = {0,0,1,-1}; */ // 4 Direction
+/* int dx[] = {1,-1,0,0,1,1,-1,-1} , dy[] = {0,0,1,-1,1,-1,1,-1}; */ // 8 Direction
+/* int dx[] = {1,-1,1,-1,2,2,-2,-2} , dy[] = {2,2,-2,-2,1,-1,1,-1}; */ // Knight Direction
+/* int dx[] = {2,-2,1,1,-1,-1} , dy[] = {0,0,1,-1,1,-1}; */ // Hexagonal Direction
+ 
+bool Check(int N,int Pos){return (bool)(N&(1<<Pos));}
+int Set(int N,int Pos) {return N=(N|(1<<Pos));}
+ 
+int status[(100000000>>5)+2];
+int prime[5761455+10] , cnt = 0 ;
+unsigned int dp[5761455+10];
+ 
+void sieve()
+{
+    for(ll i=3;i<=10000;i=i+2)
+    {
+        if(!Check(status[i>>5],i&31))
+        {
+            for(ll j=i*i;j<=100000000;j+=i<<1)
+            {
+                status[j>>5]=Set(status[j>>5],j&31);
+            }
+        }
+    }
+ 
+    prime[cnt++]=2;
+    dp[cnt-1] = 2 ;
+    for(int i=3;i<=100000000;i+=2) if(!Check(status[i>>5],i&31)) prime[cnt++]=i , dp[cnt-1]=dp[cnt-2]*i;
+}
+ 
+unsigned int find_answer(int a)
+{
+    int p = upper_bound(prime,prime+cnt,a)-prime-1 ;
+    unsigned int ans = dp[p] ;
+ 
+    for(int i=0;i<=p;i++)
+    {
+        ll c = prime[i]*prime[i] ;
+        if(c>a) break ;
+        while(c<=a) ans*=prime[i] , c=c*(ll)prime[i];
+    }
+ 
+    return ans ;
+}
+ 
+int main()
+{
+    //freopen("input.txt","r",stdin);
+    //freopen("output.txt","w",stdout);
+    sieve();
+    int T ;
+    cin >> T ;
+    for(int cas=1;cas<=T;cas++)
+    {
+        int a ;
+        cin >> a;
+        cout << "Case " << cas << ": " << find_answer(a) << endl ;
+    }
+    return 0;
+}
