@@ -1,0 +1,98 @@
+/*
+    Author : RAJON BARDHAN
+    AUST CSE 27th Batch
+    All my programming success are dedicated to my mom , dad , little sister madhobi , teachers , friends and love TANIA SULTANA RIMY
+
+    Problem Name : 1157 - LCS Revisited
+    ALGORITHM : Dynamic Programming
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+
+#define pb push_back
+#define ff first
+#define ss second
+#define mp make_pair
+#define memo(a,b) memset(a,b,sizeof(a))
+#define INF 1e9
+#define EPS 1e-8
+#define PI 3.14159265358979323846
+
+typedef long long ll ;
+typedef unsigned long long ull ;
+
+/* int dx[] = {1,-1,0,0} , dy[] = {0,0,1,-1}; */ // 4 Direction
+/* int dx[] = {1,-1,0,0,1,1,-1,-1} , dy[] = {0,0,1,-1,1,-1,1,-1}; */ // 8 Direction
+/* int dx[] = {1,-1,1,-1,2,2,-2,-2} , dy[] = {2,2,-2,-2,1,-1,1,-1}; */ // Knight Direction
+/* int dx[] = {2,-2,1,1,-1,-1} , dy[] = {0,0,1,-1,1,-1}; */ // Hexagonal Direction
+
+char A[1000+10] , B[1000+10] ;
+int lenA , lenB , mod = 1000007 ;
+int nextA[26][1000+10] , nextB[26][1000+10] , lcs[1000+10][1000+10] , lcscount[1000+10][1000+10] ;
+
+int call(int i,int j)
+{
+    int &ret = lcs[i][j] ;
+    if(ret!=-1) return ret ;
+    if(i==lenA||j==lenB) return ret = 0 ;
+
+    if(A[i]==B[j]) return ret = 1+call(i+1,j+1);
+    else return ret = max(call(i,j+1),call(i+1,j)) ;
+}
+
+int count(int i,int j)
+{
+    int &ret = lcscount[i][j] ;
+    if(ret!=-1) return ret ;
+    if(i==lenA||j==lenB) return 1 ;
+
+    int lc = call(i,j);
+    if(lc==0) return ret = 1 ;
+    ret = 0 ;
+
+    for(int k=0;k<26;k++)
+    {
+        int x = nextA[k][i] , y = nextB[k][j] ;
+
+        if(call(x,y)==lc) ret = (ret+count(x+1,y+1))%mod;
+    }
+
+    return ret ;
+}
+
+int main()
+{
+    //freopen("input.txt","r",stdin);
+    //freopen("output.txt","w",stdout);
+    int T ;
+    cin >> T ;
+    for(int cas=1;cas<=T;cas++)
+    {
+        scanf("%s%s",&A,&B);
+
+        lenA = strlen(A) , lenB = strlen(B);
+        memo(lcs,-1);memo(lcscount,-1);
+
+        for(int i=0;i<26;i++)
+        {
+            nextA[i][lenA] = lenA ;
+            for(int j=lenA-1;j>=0;j--)
+            {
+                if(A[j]-'a'==i) nextA[i][j] = j ; else nextA[i][j] = nextA[i][j+1] ;
+            }
+        }
+
+        for(int i=0;i<26;i++)
+        {
+            nextB[i][lenB] = lenB ;
+            for(int j=lenB-1;j>=0;j--)
+            {
+                if(B[j]-'a'==i) nextB[i][j] = j ; else nextB[i][j] = nextB[i][j+1] ;
+            }
+        }
+
+        cout << "Case " << cas << ": " << count(0,0) << endl ;
+    }
+    return 0;
+}
