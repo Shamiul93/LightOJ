@@ -1,0 +1,74 @@
+/*
+    Author : RAJON BARDHAN
+    AUST CSE 27th Batch
+    All my programming success are dedicated to my mom , dad , little sister madhobi , teachers , friends and love TANIA SULTANA RIMY
+
+    Problem Name : 1396 - Palindromic Numbers (III) ( LightOJ )
+    ALGORITHM : Greedy
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+
+#define pb push_back
+#define ff first
+#define ss second
+#define mp make_pair
+#define memo(a,b) memset(a,b,sizeof(a))
+#define INF 1e9
+#define EPS 1e-8
+#define PI 3.14159265358979323846
+
+typedef long long ll ;
+typedef unsigned long long ull ;
+
+/* int dx[] = {1,-1,0,0} , dy[] = {0,0,1,-1}; */ // 4 Direction
+/* int dx[] = {1,-1,0,0,1,1,-1,-1} , dy[] = {0,0,1,-1,1,-1,1,-1}; */ // 8 Direction
+/* int dx[] = {1,-1,1,-1,2,2,-2,-2} , dy[] = {2,2,-2,-2,1,-1,1,-1}; */ // Knight Direction
+/* int dx[] = {2,-2,1,1,-1,-1} , dy[] = {0,0,1,-1,1,-1}; */ // Hexagonal Direction
+
+char arr[100000+10],brr[100000+10];
+
+int main()
+{
+    //freopen("input.txt","r",stdin);
+    //freopen("output.txt","w",stdout);
+    int T ;
+    scanf("%d",&T);
+    for( int cas=1;cas<=T;cas++ )
+    {
+        scanf("%s",&arr);
+        strcpy(brr,arr);
+
+        int lo = 0 , hi = strlen(arr)-1 ;
+
+        while( lo <= hi ) arr[hi--] = arr[lo++] ;
+
+        printf("Case %d: ",cas);
+        if(strcmp(arr,brr)>0) puts(arr);
+        else
+        {
+            lo-- ; hi++ ;
+            int carry = 1 ;
+
+            while(carry!=0&&lo>-1)
+            {
+                int t=arr[lo]+carry;
+                if(t>'9') t = '0' ; else carry = 0 ;
+                arr[lo--] = arr[hi++] = t ;
+            }
+
+            if(carry==1)
+            {
+                for(int i=hi;i>=1;i--) arr[i] = arr[i-1] ;
+                arr[0] = arr[hi] = '1' ;
+            }
+
+            puts(arr);
+        }
+
+        memo(arr,NULL);
+        memo(brr,NULL);
+    }
+    return 0;
+}
